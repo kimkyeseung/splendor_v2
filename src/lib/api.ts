@@ -69,7 +69,8 @@ export async function post<T>(
   init?: RequestInit,
 ): Promise<T> {
   try {
-    const response = await fetch(path, {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}${path}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -84,6 +85,7 @@ export async function post<T>(
     }
 
     const data: T = await response.json();
+
     return data;
   } catch (error) {
     // 네트워크 에러 또는 다른 에러 발생 시

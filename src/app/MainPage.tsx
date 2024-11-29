@@ -9,16 +9,16 @@ export default function MainPage() {
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (!user) {
-      router.push('/welcome'); // 사용자 정보가 없으면 Welcome 페이지로 리디렉트
+      router.push('/welcome');
     }
   }, [router]);
 
   const handleCreateUser = () => {
-    router.push('/welcome'); // 사용자 생성 페이지로 이동
+    router.push('/welcome');
   };
 
   const handleCreateRoom = () => {
-    console.log('방 만들기 클릭'); // 방 생성 로직 추가 예정
+    router.push('/create');
   };
 
   const handleJoinRoom = () => {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUser } from './actions';
+import { createUser } from '../../components/actions';
 
 export default function WelcomePage() {
   const [nickname, setNickname] = useState('');

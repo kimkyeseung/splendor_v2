@@ -1,5 +1,5 @@
-import CreateRoom from '@/app/create/CreateRoom';
+import CreateRoomPage from './CreateRoomPage';
 
 export default function CreatePage() {
-  return <CreateRoom />;
+  return <CreateRoomPage />;
 }

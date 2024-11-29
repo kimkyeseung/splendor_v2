@@ -1,16 +1,16 @@
-type HttpMethod = "GET" | "POST" | "PATCH";
+type HttpMethod = 'GET' | 'POST' | 'PATCH';
 
 async function request<T>(
   path: string,
   method: HttpMethod,
   body?: Record<string, unknown> | string | FormData,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<{ data: T }> {
   try {
     const options: RequestInit = {
       method,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       ...init,
     };
@@ -34,7 +34,7 @@ async function request<T>(
 
 function buildUrlWithQueryParams(
   path: string,
-  params: Record<string, string | number>
+  params: Record<string, string | number>,
 ) {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}${path}`);
   Object.keys(params).forEach((key) => {
@@ -48,14 +48,15 @@ function buildUrlWithQueryParams(
 export async function get<T>(
   path: string,
   params?: { year?: number; month?: number },
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<{ data: T }> {
   try {
     const url = params
       ? buildUrlWithQueryParams(path, params)
       : `${process.env.NEXT_PUBLIC_API_URL}${path}`;
 
-    return request<T>(url, "GET", undefined, init);
+    console.log({ url });
+    return request<T>(url, 'GET', undefined, init);
   } catch (error) {
     console.error(error);
     return { data: [] as T };
@@ -65,25 +66,41 @@ export async function get<T>(
 export async function post<T>(
   path: string,
   body = {},
-  init?: RequestInit
-): Promise<{ data: T }> {
-  return request<T>(
-    `${process.env.NEXT_PUBLIC_API_URL}${path}`,
-    "POST",
-    body,
-    init
-  );
+  init?: RequestInit,
+): Promise<T> {
+  try {
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      // 서버 응답이 성공적이지 않을 경우
+      console.error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: T = await response.json();
+    return data;
+  } catch (error) {
+    // 네트워크 에러 또는 다른 에러 발생 시
+    console.error('Fetch error:', error);
+    throw error;
+  }
 }
 
 export async function patch<T>(
   path: string,
   body = {},
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<{ data: T }> {
   return request<T>(
     `${process.env.NEXT_PUBLIC_API_URL}${path}`,
-    "PATCH",
+    'PATCH',
     body,
-    init
+    init,
   );
 }

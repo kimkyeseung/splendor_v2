@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import { useQuery } from '@tanstack/react-query';
@@ -41,7 +41,6 @@ export default function RoomPage({ _id }: { _id: string }) {
 
   const [players, setPlayers] = useState<Player[]>([]);
 
-  // 소켓 연결 및 이벤트 처리
   useEffect(() => {
     if (me) {
       const socketConnection = io(socketUrl);
@@ -50,7 +49,11 @@ export default function RoomPage({ _id }: { _id: string }) {
 
       socketConnection.on('playerListUpdated', (updatedPlayers: Player[]) => {
         console.log('event emit: playerListUpdated', updatedPlayers);
-        setPlayers(updatedPlayers); // 플레이어 목록 갱신
+        setPlayers(updatedPlayers);
+      });
+
+      socketConnection.on('gameStarted', ({ gameId }: { gameId: string }) => {
+        router.push(`/game/${gameId}`);
       });
 
       setSocket(socketConnection);
@@ -61,14 +64,16 @@ export default function RoomPage({ _id }: { _id: string }) {
     }
   }, [me]);
 
-  // 플레이어가 준비 상태를 토글
+  const isStartable = useMemo(() => {
+    return players.every((p) => p._id !== me?._id || p.isReady);
+  }, [players]);
+
   const toggleReady = () => {
     if (socket) {
-      socket.emit('toggleReady', { roomId: _id, user: me });
+      socket.emit('toggleReady', { roomId: _id });
     }
   };
 
-  // 게임 시작
   const startGame = () => {
     if (socket) {
       socket.emit('startGame', { roomId: _id });
@@ -92,7 +97,9 @@ export default function RoomPage({ _id }: { _id: string }) {
                 player.isReady ? 'bg-green-200' : 'bg-gray-200'
               }`}
             >
-              <span className="font-medium">{player.nickname}</span>
+              <span className="font-medium text-gray-800">
+                {player.nickname} {player._id === me?._id && <span>(나)</span>}
+              </span>
               <span className="text-sm text-gray-600">
                 {player.isReady ? '준비 완료' : '대기 중'}
               </span>
@@ -101,10 +108,11 @@ export default function RoomPage({ _id }: { _id: string }) {
         </ul>
 
         <div className="flex gap-2">
-          {players.find((player) => player._id === me?._id)?.isHost ? (
+          {players[0]?._id === me?._id ? (
             <button
               onClick={startGame}
-              className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+              className="w-full py-3 bg-blue-500 disabled:bg-blue-200 text-white font-semibold rounded-lg hover:bg-blue-600"
+              disabled={!isStartable}
             >
               게임 시작
             </button>

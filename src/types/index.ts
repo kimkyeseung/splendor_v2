@@ -11,8 +11,13 @@ export interface CreateRoomParams {
 }
 
 export interface CreateUserResponse {
-  id: string;
+  _id: string;
   nickname: string;
   createdAt: string;
   lastActiveAt: string;
+}
+
+export interface User {
+  _id: string;
+  nickname: string;
 }

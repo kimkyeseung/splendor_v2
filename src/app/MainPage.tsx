@@ -2,16 +2,26 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { fetchUser } from './actions';
+import { User } from '@/types';
 
 export default function MainPage() {
   const router = useRouter();
 
+  const userId = localStorage.getItem('user');
+
+  const { isError } = useQuery<User>({
+    queryKey: ['me'],
+    queryFn: async () => await fetchUser(userId!),
+    enabled: Boolean(userId),
+  });
+
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (!user) {
+    if (!userId || isError) {
       router.push('/welcome');
     }
-  }, [router]);
+  }, [userId, isError]);
 
   const handleCreateUser = () => {
     router.push('/welcome');

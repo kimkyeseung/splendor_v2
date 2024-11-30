@@ -4,7 +4,7 @@ import { fetchRooms } from '@/actions';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-export default function RoomsPage() {
+export default function Rooms() {
   // 방 목록 가져오기
   const {
     data: rooms,

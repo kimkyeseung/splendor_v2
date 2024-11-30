@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUser } from '../../components/actions';
 
@@ -8,13 +8,6 @@ export default function WelcomePage() {
   const [nickname, setNickname] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      router.push('/'); // 이미 사용자 정보가 있으면 메인 페이지로 리디렉트
-    }
-  }, [router]);
 
   const handleSubmit = async () => {
     if (!nickname.trim()) {
@@ -24,7 +17,7 @@ export default function WelcomePage() {
 
     try {
       const user = await createUser(nickname);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', user._id);
       setIsSubmitted(true);
       router.push('/'); // 메인 페이지로 이동
     } catch (error) {

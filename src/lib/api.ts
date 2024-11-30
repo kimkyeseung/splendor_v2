@@ -5,7 +5,7 @@ async function request<T>(
   method: HttpMethod,
   body?: Record<string, unknown> | string | FormData,
   init?: RequestInit,
-): Promise<{ data: T }> {
+): Promise<T> {
   try {
     const options: RequestInit = {
       method,
@@ -49,17 +49,16 @@ export async function get<T>(
   path: string,
   params?: { year?: number; month?: number },
   init?: RequestInit,
-): Promise<{ data: T }> {
+): Promise<T> {
   try {
     const url = params
       ? buildUrlWithQueryParams(path, params)
       : `${process.env.NEXT_PUBLIC_API_URL}${path}`;
 
-    console.log({ url });
     return request<T>(url, 'GET', undefined, init);
   } catch (error) {
     console.error(error);
-    return { data: [] as T };
+    return { data: [] } as T;
   }
 }
 
@@ -98,7 +97,7 @@ export async function patch<T>(
   path: string,
   body = {},
   init?: RequestInit,
-): Promise<{ data: T }> {
+): Promise<T> {
   return request<T>(
     `${process.env.NEXT_PUBLIC_API_URL}${path}`,
     'PATCH',

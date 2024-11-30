@@ -32,7 +32,7 @@ export default function MainPage() {
   };
 
   const handleJoinRoom = () => {
-    console.log('방 참여하기 클릭'); // 방 참여 로직 추가 예정
+    router.push('/rooms');
   };
 
   return (

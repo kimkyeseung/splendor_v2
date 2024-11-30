@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
-import { useQuery } from '@tanstack/react-query';
-import { fetchRoom, fetchUser } from './actions';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { createGame, fetchRoom, fetchUser } from './actions';
 import { Room, User } from '@/types';
 
 const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
@@ -33,6 +33,16 @@ export default function RoomPage({ _id }: { _id: string }) {
     enabled: Boolean(userId),
   });
 
+  const mutation = useMutation({
+    mutationFn: createGame,
+    mutationKey: ['game'],
+    onSuccess: (data: any) => {
+      if (socket) {
+        socket.emit('startGame', { gameId: data._id, roomId: _id });
+      }
+    },
+  });
+
   useEffect(() => {
     if (!userId || isError) {
       router.push('/welcome');
@@ -52,7 +62,8 @@ export default function RoomPage({ _id }: { _id: string }) {
         setPlayers(updatedPlayers);
       });
 
-      socketConnection.on('gameStarted', ({ gameId }: { gameId: string }) => {
+      socketConnection.on('gameStarted', (gameId: string) => {
+        console.log('work');
         router.push(`/game/${gameId}`);
       });
 
@@ -75,9 +86,7 @@ export default function RoomPage({ _id }: { _id: string }) {
   };
 
   const startGame = () => {
-    if (socket) {
-      socket.emit('startGame', { roomId: _id });
-    }
+    mutation.mutate({ roomId: _id, players });
   };
 
   if (isLoading) {

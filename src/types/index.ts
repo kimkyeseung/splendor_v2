@@ -21,3 +21,11 @@ export interface User {
   _id: string;
   nickname: string;
 }
+
+export interface CreateGamePayload {
+  roomId: string;
+  players: {
+    _id: string;
+    nickname: string;
+  }[];
+}

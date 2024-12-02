@@ -10,6 +10,8 @@ export default function GamePage({ _id }: { _id: string }) {
     queryFn: async () => await fetchGame(_id),
   });
 
+  // TODO: markup here
+
   const [gameState, setGameState] = useState<any>(null);
 
   const handlePlayerMove = () => {};

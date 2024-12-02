@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import GameRoom from './GameRoom';
+import GamePage from './GamePage';
 import { fetchGame } from './actions';
 
 export default async function Page({
@@ -23,7 +23,7 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <GameRoom _id={_id} />;
+      <GamePage _id={_id} />;
     </HydrationBoundary>
   );
 }

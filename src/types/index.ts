@@ -29,3 +29,19 @@ export interface CreateGamePayload {
     nickname: string;
   }[];
 }
+
+export type CardValue = 'blue' | 'black' | 'white' | 'red' | 'green';
+
+type Cost = {
+  [key in CardValue]?: number;
+};
+
+export interface DevelopmentCard {
+  grade: 1 | 2 | 3;
+  id: string;
+  value: CardValue;
+  valueAmount: number;
+  victoryPoint: number;
+  cost: Cost;
+  set: 'original';
+}

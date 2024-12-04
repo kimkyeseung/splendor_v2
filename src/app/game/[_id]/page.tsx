@@ -23,7 +23,7 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <GamePage _id={_id} />;
+      <GamePage _id={_id} />
     </HydrationBoundary>
   );
 }

@@ -9,13 +9,23 @@ interface Props {
   card: DevelopmentCard;
 }
 
-export function Card({ card: { cost, value, victoryPoint } }: Props) {
+const getClassNameById = (id: string) => `bg-${id}`;
+
+export function Card({ card: { id, cost, value, victoryPoint } }: Props) {
   return (
     <div
-      className={classNames('h-[180px] w-[150px] rounded-xl overflow-hidden')}
+      className={classNames(
+        'h-[180px] w-[150px] rounded-xl overflow-hidden',
+        getClassNameById(id),
+        'bg-cover',
+      )}
     >
       <Header>
-        <VictoryPoint>{victoryPoint}</VictoryPoint>
+        {victoryPoint ? (
+          <VictoryPoint>{victoryPoint}</VictoryPoint>
+        ) : (
+          <span></span>
+        )}
         <Color color={value} size={'large'} />
       </Header>
       <Cost cost={cost} />

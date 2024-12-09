@@ -114,6 +114,9 @@ export default {
         NB09: "url('/noble-images/noble_09.webp')",
         NB10: "url('/noble-images/noble_10.webp')",
       },
+      boxShadow: {
+        'inner-glow': 'inset 0 3px 4px -1px rgba(255, 255, 255, 0.2)',
+      },
     },
   },
   plugins: [require('@designbycode/tailwindcss-text-stroke')],

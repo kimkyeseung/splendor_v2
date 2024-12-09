@@ -32,6 +32,8 @@ export interface CreateGamePayload {
 
 export type CardValue = 'blue' | 'black' | 'white' | 'red' | 'green';
 
+export type TokenColors = CardValue | 'yellow';
+
 type Cost = {
   [key in CardValue]?: number;
 };
@@ -54,4 +56,11 @@ export interface NobleTile {
   id: string;
   victoryPoint: number;
   condition: Condition;
+}
+
+export interface BoardState {
+  nobles: NobleTile[];
+  tokens: {
+    [key in TokenColors]: number;
+  };
 }

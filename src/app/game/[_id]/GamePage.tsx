@@ -9,6 +9,15 @@ import { TokensPanel } from './TokensPanel';
 import { NoblesPanel } from './NoblesPanel';
 import { DevelopmentCardsPanel } from './DevelopmentCardsPanel';
 
+const tokens = {
+  yellow: 4,
+  red: 0,
+  green: 0,
+  blue: 0,
+  white: 6,
+  black: 1,
+};
+
 export default function GamePage({ _id }: { _id: string }) {
   const { data: game } = useQuery<any>({
     queryKey: ['game', _id],
@@ -29,7 +38,7 @@ export default function GamePage({ _id }: { _id: string }) {
           <NoblesPanel />
           <DevelopmentCardsPanel />
         </div>
-        <TokensPanel />
+        <TokensPanel tokens={tokens} />
       </div>
       <MyPanel />
     </div>

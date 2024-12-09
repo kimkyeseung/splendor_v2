@@ -1,11 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createGame, fetchRoom, fetchUser } from './actions';
 import { Room, User } from '@/types';
+import {
+  SocektStateContext,
+  SocketDispatchContext,
+} from '@/app/SocketProvider';
 
 const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
 
@@ -18,7 +22,8 @@ interface Player {
 
 export default function RoomPage({ _id }: { _id: string }) {
   const router = useRouter();
-  const [socket, setSocket] = useState<Socket>();
+  const socket = useContext(SocektStateContext);
+  const setSocket = useContext(SocketDispatchContext);
 
   const userId = localStorage.getItem('user');
 

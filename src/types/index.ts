@@ -36,6 +36,10 @@ type Cost = {
   [key in CardValue]?: number;
 };
 
+type Condition = {
+  [key in CardValue]?: number;
+};
+
 export interface DevelopmentCard {
   grade: 1 | 2 | 3;
   id: string;
@@ -44,4 +48,10 @@ export interface DevelopmentCard {
   victoryPoint: number;
   cost: Cost;
   set: 'original';
+}
+
+export interface NobleTile {
+  id: string;
+  victoryPoint: number;
+  condition: Condition;
 }

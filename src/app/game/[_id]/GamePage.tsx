@@ -23,6 +23,7 @@ export default function GamePage({ _id }: { _id: string }) {
     queryKey: ['game', _id],
     queryFn: async () => await fetchGame(_id),
   });
+  console.log(game)
 
   // TODO: markup here
 

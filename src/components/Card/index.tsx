@@ -4,19 +4,18 @@ import { Cost } from './Cost';
 import { Header } from './Header';
 import { VictoryPoint } from '../VictoryPoint';
 import { Color } from './Color';
+import { cardImageMap } from './cardImageMap';
 
 interface Props {
   card: DevelopmentCard;
 }
-
-const getClassNameById = (id: string) => `bg-${id}`;
 
 export function Card({ card: { id, cost, value, victoryPoint } }: Props) {
   return (
     <div
       className={classNames(
         'h-[180px] w-[150px] rounded-xl overflow-hidden',
-        getClassNameById(id),
+        cardImageMap[id],
         'bg-cover',
       )}
     >

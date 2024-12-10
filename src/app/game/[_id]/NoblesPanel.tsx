@@ -1,36 +1,12 @@
 import { Noble } from '@/components/Noble';
 import { Section } from '@/components/Section';
+import { NobleTile } from '@/types';
 
-const nobles = [
-  {
-    id: 'NB01',
-    victoryPoint: 3,
-    condition: {
-      red: 3,
-      white: 3,
-      black: 3,
-    },
-  },
-  {
-    id: 'NB02',
-    victoryPoint: 3,
-    condition: {
-      red: 3,
-      green: 3,
-      blue: 3,
-    },
-  },
-  {
-    id: 'NB03',
-    victoryPoint: 3,
-    condition: {
-      green: 4,
-      blue: 4,
-    },
-  },
-];
+interface Props {
+  nobles: NobleTile[];
+}
 
-export function NoblesPanel() {
+export function NoblesPanel({ nobles }: Props) {
   return (
     <Section>
       <div className="flex gap-2 justify-center">

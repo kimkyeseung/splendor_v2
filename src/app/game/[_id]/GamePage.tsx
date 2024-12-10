@@ -9,21 +9,12 @@ import { TokensPanel } from './TokensPanel';
 import { NoblesPanel } from './NoblesPanel';
 import { DevelopmentCardsPanel } from './DevelopmentCardsPanel';
 
-const tokens = {
-  yellow: 4,
-  red: 0,
-  green: 0,
-  blue: 0,
-  white: 6,
-  black: 1,
-};
-
 export default function GamePage({ _id }: { _id: string }) {
   const { data: game } = useQuery<any>({
     queryKey: ['game', _id],
     queryFn: async () => await fetchGame(_id),
   });
-  console.log(game)
+  console.log(game);
 
   // TODO: markup here
 
@@ -36,10 +27,14 @@ export default function GamePage({ _id }: { _id: string }) {
       <div className="grid grid-cols-[280px_1fr_280px] gap-x-4 gap-y-5">
         <PlayersPanel />
         <div className="grid grid-rows-[200px_1fr] gap-x-4 gap-y-5">
-          <NoblesPanel />
-          <DevelopmentCardsPanel />
+          <NoblesPanel nobles={game.nobles} />
+          <DevelopmentCardsPanel
+            level3Cards={game.lev3Cards}
+            level2Cards={game.lev2Cards}
+            level1Cards={game.lev1Cards}
+          />
         </div>
-        <TokensPanel tokens={tokens} />
+        <TokensPanel tokens={game.tokens} />
       </div>
       <MyPanel />
     </div>

@@ -9,7 +9,8 @@ import { User } from '@/types';
 export default function MainPage() {
   const router = useRouter();
 
-  const userId = localStorage.getItem('user');
+  const userId =
+    typeof window !== undefined ? localStorage.getItem('user') : '';
 
   const { isError } = useQuery<User>({
     queryKey: ['me'],

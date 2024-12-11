@@ -1,17 +1,11 @@
 'use client';
 
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { io } from 'socket.io-client';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createGame, fetchRoom, fetchUser } from './actions';
 import { Room, User } from '@/types';
-import {
-  SocektStateContext,
-  SocketDispatchContext,
-} from '@/app/SocketProvider';
-
-const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
+import { useSocket } from '@/app/SocketProvider';
 
 interface Player {
   _id: string;
@@ -22,8 +16,7 @@ interface Player {
 
 export default function RoomPage({ _id }: { _id: string }) {
   const router = useRouter();
-  const socket = useContext(SocektStateContext);
-  const setSocket = useContext(SocketDispatchContext);
+  const socket = useSocket();
 
   const userId = localStorage.getItem('user');
 
@@ -57,8 +50,9 @@ export default function RoomPage({ _id }: { _id: string }) {
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
+    console.log('work', me);
     if (me) {
-      const socketConnection = io(socketUrl);
+      const socketConnection = socket.connect();
 
       socketConnection.emit('joinRoom', { roomId: _id, user: me });
 
@@ -72,13 +66,11 @@ export default function RoomPage({ _id }: { _id: string }) {
         router.push(`/game/${gameId}`);
       });
 
-      setSocket(socketConnection);
-
       return () => {
-        socketConnection.disconnect();
+        socketConnection.emit('leaveRoom');
       };
     }
-  }, [me]);
+  }, []);
 
   const isStartable = useMemo(() => {
     return players.every((p) => p._id !== me?._id || p.isReady);

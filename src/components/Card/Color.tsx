@@ -1,4 +1,4 @@
-import { lobster } from '@/lib/font';
+import { lobster } from '@/app/lib/font';
 import { CardValue } from '@/types';
 import classNames from 'classnames';
 import { PropsWithChildren } from 'react';

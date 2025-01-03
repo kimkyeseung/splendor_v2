@@ -1,6 +1,6 @@
 'use server';
 
-import { get, post } from '@/lib/api';
+import { get, post } from '@/app/lib/api';
 import { CreateGamePayload, Room, User } from '@/types';
 
 export async function fetchRoom(_id: string) {

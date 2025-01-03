@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { ReactQueryProvider } from './ReactQueryProvider';
 import './globals.css';
 import { SocketProvider } from './SocketProvider';
+import { SessionProvider } from 'next-auth/react';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -30,9 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReactQueryProvider>
-          <SocketProvider>{children}</SocketProvider>
-        </ReactQueryProvider>
+        <SessionProvider>
+          <ReactQueryProvider>
+            <SocketProvider>{children}</SocketProvider>
+          </ReactQueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );

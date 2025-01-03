@@ -1,10 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUser } from '../../components/actions';
+import { useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 export default function WelcomePage() {
+  const { data: session } = useSession();
+  console.log('session');
+  console.log(session);
+
   const [nickname, setNickname] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
@@ -17,7 +23,8 @@ export default function WelcomePage() {
 
     try {
       const user = await createUser(nickname);
-      localStorage.setItem('user', user._id);
+      signIn(user._id);
+      // createSession(user._id);
       setIsSubmitted(true);
       router.push('/'); // 메인 페이지로 이동
     } catch (error) {

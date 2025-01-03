@@ -5,24 +5,27 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from './actions';
 import { User } from '@/types';
+import { verifySession } from './lib/dal';
 
-export default function MainPage() {
+interface Props {
+  isAuth: boolean;
+  userId?: string;
+}
+
+export default function MainPage({ isAuth, userId }: Props) {
   const router = useRouter();
-
-  const userId =
-    typeof window !== undefined ? localStorage.getItem('user') : '';
 
   const { isError } = useQuery<User>({
     queryKey: ['me'],
     queryFn: async () => await fetchUser(userId!),
-    enabled: Boolean(userId),
+    enabled: isAuth,
   });
 
   useEffect(() => {
-    if (!userId || isError) {
+    if (!userId || isAuth) {
       router.push('/welcome');
     }
-  }, [userId, isError]);
+  }, [userId, isAuth, isError]);
 
   const handleCreateUser = () => {
     router.push('/welcome');

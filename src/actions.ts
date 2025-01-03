@@ -1,6 +1,6 @@
 'use server';
 
-import { get } from '@/lib/api';
+import { get } from '@/app/lib/api';
 import { Room } from '@/types';
 
 export async function fetchRooms() {

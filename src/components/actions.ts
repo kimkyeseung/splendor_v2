@@ -1,6 +1,6 @@
 'use server';
 
-import { post } from '@/lib/api';
+import { post } from '@/app/lib/api';
 import { CreateUserResponse } from '@/types';
 
 export async function createUser(nickname: string) {
